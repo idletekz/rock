@@ -1,0 +1,31 @@
+name: vault and github demo
+on: [workflow_dispatch]
+jobs:
+  get-a-secret:
+    runs-on: self-hosted
+    steps:
+    - name: add masks for the env vars
+      run: |
+        echo "::add-mask::$ROLE_ID"
+        echo "::add-mask::$SECRET_ID"
+
+    - name: import env var
+      run: |
+        echo ROLE_ID="$ROLE_ID" >> $GITHUB_ENV
+        echo SECRET_ID="$SECRET_ID" >> $GITHUB_ENV
+
+    - name: retrieve secret
+      uses: hashicorp/vault-action@v2.3.1
+      with:
+        url: http://localhost:8200
+        method: approle
+        roleId: ${{ env.ROLE_ID }}
+        secretId: ${{ env.SECRET_ID }}
+        secrets: |
+          secret/data/github-runner the_secret | THE_SECRET;
+
+    - name: prove it
+      run: |
+        echo $THE_SECRET
+        echo $THE_SECRET | cut -d . -f 1
+        echo $THE_SECRET | cut -d . -f 2
