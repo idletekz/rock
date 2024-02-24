@@ -16,11 +16,12 @@ jobs:
 
     # use action located in https://github.com/actions
     - name: checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - run: echo "the ${{  github.repository }} repository has been cloned to the runner"
 
-    - run: echo "the workspace ${{ github.workspace }}"
+    - run: echo "the workspace is ${{ github.workspace }}"
+
     - name: conditional step when event name is pull request
       if: ${{ github.event_name == "pull_request" }}
       run: echo "this even is a pull request"
