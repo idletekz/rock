@@ -20,7 +20,7 @@ jobs:
 
     - run: echo "the ${{  github.repository }} repository has been cloned to the runner"
 
-    - run: echo "the workspace: ${{ github.workspace }}"
+    - run: echo "the workspace ${{ github.workspace }}"
     - name: conditional step when event name is pull request
       if: ${{ github.event_name == "pull_request" }}
       run: echo "this even is a pull request"
