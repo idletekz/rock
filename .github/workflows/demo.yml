@@ -17,7 +17,7 @@ jobs:
           ls ${{ github.workspace }}
 
       - name: conditional step when event name is pull request
-        if: ${{ github.event_name == "pull_request" }}
+        if: ${{ github.event_name == 'pull_request' }}
         run: echo "this even is a pull request"
 
       - name: setup dotnet on runner
