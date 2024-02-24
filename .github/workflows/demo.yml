@@ -1,0 +1,44 @@
+name: demo
+on: push
+jobs:
+  job1:
+    name: job1-name
+    runs: ubuntu-latest
+    steps:
+    # display the event that triggered the workflow
+    - run: echo "the job was triggered by a ${{ github.event_name }} event."
+
+    # runner information
+    - run: echo "this job is now running on a ${{ runner.os }} server hosted by github"
+
+    # information about the repository and branch
+    - run: echo "the name of your branch is ${{ github.ref }} and repository is ${{ github.repository }}"
+
+    # use action located in https://github.com/actions
+    - name: checkout code
+      uses: actions/checkout@v2
+
+    - run: echo "the ${{  github.repository }} repository has been cloned to the runner"
+
+    - run: echo "the workspace: ${{ github.workspace }}"
+    - name: conditional step when event name is pull request
+      if: ${{ github.event_name == "pull_request" }}
+      run: echo "this even is a pull request"
+
+    - name: list files in the repository
+      run: |
+        ls ${{ github.workspace }}
+      
+    - name: setup dotnet on runner
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: "3.x"
+
+    - name: display dotnet version
+      run: dotnet --version
+
+    - name: list files in tool cache
+      run: | 
+        ls ${{ runner.tool_cache }}
+
+    - run: echo "this job's status is ${{ job.status }}"
